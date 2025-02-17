@@ -1,7 +1,1 @@
-/Front/.next/
-/Front/node_modules/
-/Front/src/
-/Front/.env
-/Front/next-env.d.ts
-
-/.idea/
+.idea
