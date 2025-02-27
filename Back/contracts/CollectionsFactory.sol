@@ -22,7 +22,7 @@ contract CollectionsFactory{
             }
         }
         // Initialize the collection contract with the artist settings
-        NFTCollections(collectionAddress).initialize(msg.sender, collectionName, collectionSymbol);
+        NFTCollections().initialize(msg.sender, collectionAddress, collectionName, collectionSymbol);
 
         emit CollectionCreated(collectionName, collectionAddress, block.timestamp);
     }
