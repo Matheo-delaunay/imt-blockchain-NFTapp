@@ -3,6 +3,7 @@ import "./globals.css"
 import React from "react";
 import {headers} from "next/headers";
 import ContextProvider from "@/components/ContextProvider";
+import Navigation from "@/components/Navigation";
 
 
 export const metadata: Metadata = {
@@ -21,7 +22,10 @@ export default async function RootLayout({
         <html>
         <body>
         <div className="flex min-h-[100dvh] flex-col">
-            <ContextProvider cookies={cookies}>{children}</ContextProvider>
+            <ContextProvider cookies={cookies}>
+                <Navigation />
+                {children}
+            </ContextProvider>
         </div>
         </body>
         </html>
