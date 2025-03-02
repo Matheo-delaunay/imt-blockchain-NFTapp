@@ -20,7 +20,7 @@ export default function Navigation() {
                     <Link href="/concerts" className="text-sm font-medium hover:underline underline-offset-4">
                         Concerts
                     </Link>
-                    <Link href="#" className="text-sm font-medium hover:underline underline-offset-4">
+                    <Link href="/about" className="text-sm font-medium hover:underline underline-offset-4">
                         About us
                     </Link>
                 </nav>
