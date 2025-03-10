@@ -81,14 +81,14 @@ const concerts = [
 
 export default function ConcertsPage() {
     const [searchQuery, setSearchQuery] = useState("")
-    const [selectedCategory, setSelectedCategory] = useState("")
+    const [selectedCategory, setSelectedCategory] = useState("all")
 
     const filteredConcerts = concerts.filter((concert) => {
         const matchesSearch =
             concert.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
             concert.venue.toLowerCase().includes(searchQuery.toLowerCase()) ||
             concert.city.toLowerCase().includes(searchQuery.toLowerCase())
-        const matchesCategory = selectedCategory === "" || concert.category === selectedCategory
+        const matchesCategory = selectedCategory === "all" || concert.category === selectedCategory
         return matchesSearch && matchesCategory
     })
 
