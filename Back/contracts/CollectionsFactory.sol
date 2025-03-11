@@ -3,7 +3,6 @@ pragma solidity ^0.8.28;
 
 import {ConcertSFT} from "./ConcertSFT.sol";
 
-// importing the ERC-721 contract to deploy for an artist
 
 contract ConcertFactory {
 
