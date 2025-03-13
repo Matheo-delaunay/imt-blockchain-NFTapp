@@ -1,4 +1,6 @@
 import {Button} from "@/components/ui/button";
+import Link from "next/link";
+
 
 export default function CTA() {
     return (
@@ -15,7 +17,7 @@ export default function CTA() {
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row lg:justify-end">
                     <Button size="lg" className="gap-1.5">
-                        For Event Organizers
+                    <Link href="/events">For Event Organizers</Link>
                     </Button>
                     <Button size="lg" variant="outline">
                         For Attendees
