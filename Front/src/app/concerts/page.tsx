@@ -13,6 +13,17 @@ import {useState} from "react";
 const concerts = [
     {
         id: 1,
+        title: "Lady Gaga in Singapore",
+        date: "2024-05-19",
+        time: "20:00",
+        venue: "National Stadium",
+        city: "Singapore",
+        price: "299",
+        image: "/25sg_ladygaga.jpg?height=400&width=600",
+        category: "Pop",
+    },
+    {
+        id: 7,
         title: "Taylor Swift | The Eras Tour",
         date: "2024-03-15",
         time: "20:00",
@@ -165,7 +176,7 @@ export default function ConcertsPage() {
                         </CardContent>
                         <CardFooter>
                             <Button asChild className="w-full">
-                                <Link href={`/concerts/${concert.id}`}>Get Tickets</Link>
+                                <Link href={`/concerts/detail/${concert.id}`}>Get Tickets</Link>
                             </Button>
                         </CardFooter>
                     </Card>

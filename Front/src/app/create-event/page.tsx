@@ -16,19 +16,26 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const musicCategories = ["Pop", "Hip Hop", "Rock", "R&B", "Rap", "Jazz"]
+const ticketTypes = ["VIP", "Standard"]
 
 export default function CreateEventPage() {
     const [date, setDate] = useState<Date>()
+    const [ticketPrices, setTicketPrices] = useState<Record<string, number>>({})
+    const [priceUnits, setPriceUnits] = useState<Record<string, string>>({})
+
+    const handlePriceChange = (type: string, value: number | string) => {
+        setTicketPrices((prev) => ({ ...prev, [type]: Number(value) }))
+    }
+
+    const handleUnitChange = (type: string, unit: string) => {
+        setPriceUnits((prev) => ({ ...prev, [type]: unit }))
+    }
 
     return (
         <div className="container max-w-4xl py-10">
             {/* Title Section */}
-            <h1 className="text-3xl font-bold text-center text-gray-900">
-                🎉 Create Your Event
-            </h1>
-            <p className="text-center text-gray-500 mb-6">
-                Fill out the details below to bring your event to life.
-            </p>
+            <h1 className="text-3xl font-bold text-center text-gray-900">🎉 Create Your Event</h1>
+            <p className="text-center text-gray-500 mb-6">Fill out the details below to bring your event to life.</p>
 
             <form className="space-y-8">
                 <div className="grid gap-6 md:grid-cols-2">
@@ -84,16 +91,46 @@ export default function CreateEventPage() {
                 {/* Tickets Section */}
                 <div className="space-y-4">
                     <h3 className="text-lg font-medium">Tickets</h3>
-                    <p className="text-sm text-muted-foreground">Set the number for each type of ticket</p>
-                    <div className="grid gap-6 md:grid-cols-2">
-                        <div className="space-y-2">
-                            <Label htmlFor="vip">VIP</Label>
-                            <Input id="vip" type="number" min="0" />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="standard">Standard</Label>
-                            <Input id="standard" type="number" min="0" />
-                        </div>
+                    <p className="text-sm text-muted-foreground">Set the number and price for each type of ticket</p>
+                    <div className="space-y-4">
+                        {ticketTypes.map((type) => (
+                            <div key={type} className="flex items-center gap-4">
+                                {/* Ticket Type Label */}
+                                <Label className="w-24 text-left font-medium">{type}</Label>
+
+                                <div className="flex flex-1 gap-4">
+                                    {/* Ticket Number Input */}
+                                    <div className="relative rounded-md shadow-sm w-64">
+                                        <Input type="number" min="0" placeholder={`Number of ${type}`} className="w-full" />
+                                    </div>
+
+                                    {/* Price Label */}
+                                    <Label className="flex items-center">Price</Label>
+
+                                    {/* Price Input */}
+                                    <div className="relative rounded-md shadow-sm w-64">
+                                        <Input
+                                            type="text"
+                                            value={ticketPrices[type] || ""}
+                                            onChange={(e) => handlePriceChange(type, e.target.value)}
+                                            placeholder="Set price"
+                                            className="w-full"
+                                        />
+                                    </div>
+
+                                    {/* Currency Selection */}
+                                    <Select defaultValue="EUR" onValueChange={(value) => handleUnitChange(type, value)}>
+                                        <SelectTrigger className="w-16">
+                                            <SelectValue placeholder="€" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="EUR">€</SelectItem>
+                                            <SelectItem value="ETH">ETH</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
@@ -162,4 +199,3 @@ export default function CreateEventPage() {
         </div>
     )
 }
-
