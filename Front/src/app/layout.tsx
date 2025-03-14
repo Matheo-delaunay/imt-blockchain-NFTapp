@@ -4,6 +4,7 @@ import React from "react";
 import {headers} from "next/headers";
 import ContextProvider from "@/components/ContextProvider";
 import Navigation from "@/components/Navigation";
+import { ThemeProvider } from "@/components/theme-provider";
 
 
 export const metadata: Metadata = {
@@ -19,14 +20,16 @@ export default async function RootLayout({
     const cookies = (await headers()).get('cookie')
 
     return (
-        <html>
+        <html suppressHydrationWarning>
         <body>
-        <div className="flex min-h-[100dvh] flex-col">
-            <ContextProvider cookies={cookies}>
-                <Navigation />
-                {children}
-            </ContextProvider>
-        </div>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <div className="flex min-h-[100dvh] flex-col">
+                <ContextProvider cookies={cookies}>
+                    <Navigation />
+                    {children}
+                </ContextProvider>
+            </div>
+        </ThemeProvider>
         </body>
         </html>
     )

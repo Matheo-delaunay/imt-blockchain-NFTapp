@@ -12,7 +12,7 @@ export default function SignInPage() {
     const {isConnected} = useAppKitAccount()
 
     if (isConnected) {
-        redirect("/")
+        redirect("/account")
     }
 
     return (

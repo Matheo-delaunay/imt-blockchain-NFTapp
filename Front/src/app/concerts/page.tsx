@@ -19,8 +19,7 @@ const concerts = [
         venue: "Madison Square Garden",
         city: "New York",
         price: "299",
-        image: "/img.png?height=400&width=600",
-        category: "Pop",
+        image: "/img.png?height=400&width=600"
     },
     {
         id: 2,
