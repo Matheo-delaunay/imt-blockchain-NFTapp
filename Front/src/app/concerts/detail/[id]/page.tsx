@@ -1,106 +1,167 @@
 "use client"
 
-import { useParams } from "next/navigation";
+import { useParams } from "next/navigation"
+import { useState } from "react"
+import { mockEvents } from "@/lib/mockEvents"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent } from "@/components/ui/card"
+import { ChevronDown, ChevronUp, MapPin } from "lucide-react"
 
-const concerts = [
-    {
-        id: 1,
-        title: "Lady Gaga in Singapore",
-        date: "2024-05-19",
-        time: "20:00",
-        venue: "National Stadium",
-        city: "Singapore",
-        price: "299",
-        image: "/25sg_ladygaga.jpg?height=400&width=600",
-        category: "Pop",
-    },
-    {
-        id: 7,
-        title: "Taylor Swift | The Eras Tour",
-        date: "2024-03-15",
-        time: "20:00",
-        venue: "Madison Square Garden",
-        city: "New York",
-        price: "299",
-        image: "/img.png?height=400&width=600"
-    },
-    {
-        id: 2,
-        title: "Ed Sheeran World Tour",
-        date: "2024-03-20",
-        time: "19:30",
-        venue: "Wembley Stadium",
-        city: "London",
-        price: "189",
-        image: "/img.png?height=400&width=600",
-        category: "Pop",
-    },
-    {
-        id: 3,
-        title: "Metallica",
-        date: "2024-04-05",
-        time: "21:00",
-        venue: "Rose Bowl",
-        city: "Los Angeles",
-        price: "250",
-        image: "/img.png?height=400&width=600",
-        category: "Rock",
-    },
-    {
-        id: 4,
-        title: "The Weeknd",
-        date: "2024-04-15",
-        time: "20:00",
-        venue: "United Center",
-        city: "Chicago",
-        price: "225",
-        image: "/img.png?height=400&width=600",
-        category: "R&B",
-    },
-    {
-        id: 5,
-        title: "Bad Bunny",
-        date: "2024-05-01",
-        time: "20:30",
-        venue: "American Airlines Arena",
-        city: "Miami",
-        price: "275",
-        image: "/img.png?height=400&width=600",
-        category: "Latin",
-    },
-    {
-        id: 6,
-        title: "Drake",
-        date: "2024-05-10",
-        time: "21:00",
-        venue: "Scotiabank Arena",
-        city: "Toronto",
-        price: "295",
-        image: "/img.png?height=400&width=600",
-        category: "Hip Hop",
-    },
-]
+const EventDetail = () => {
+    const params = useParams()
+    const concertId = Number(params.id)
 
-export default function ConcertDetailPage() {
-    const params = useParams();
-    const concertId = Number(params.id);
+    const [selectedTickets, setSelectedTickets] = useState<{ [key: string]: number }>({})
+    const [isDescriptionOpen, setIsDescriptionOpen] = useState(true)
 
-    if (isNaN(concertId)) return <h1>Invalid Concert ID</h1>;
+    if (isNaN(concertId)) return <h1 className="text-center text-red-500">Invalid Concert ID</h1>
 
-    const concert = concerts.find((c) => c.id === concertId);
+    const event = mockEvents.find((c) => Number(c.id) === concertId)
 
-    if (!concert) {
-        return <h1>Concert Not Found</h1>;
+    if (!event) {
+        return <h1 className="text-center text-gray-500">Concert not found.</h1>
     }
 
+    const handleQuantityChange = (ticketType: string, value: number) => {
+        setSelectedTickets((prev) => ({
+            ...prev,
+            [ticketType]: value,
+        }))
+    }
+
+    // Format date for display
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString)
+        const day = date.getDate()
+        const month = date.toLocaleString("default", { month: "short" }).toUpperCase()
+        const year = date.getFullYear()
+        return { day, month, year }
+    }
+
+    const { day, month, year } = formatDate(event.date)
+
     return (
-        <div className="p-8">
-            <h1 className="text-3xl font-bold">{concert.title}</h1>
-            <img src={concert.image} alt={concert.title} className="w-full max-w-md" />
-            <p><strong>Date:</strong> {concert.date}</p>
-            <p><strong>Time:</strong> {concert.time}</p>
-            <p><strong>Venue:</strong> {concert.venue}, {concert.city}</p>
-            <p><strong>Price:</strong> ${concert.price}</p>
+        <div className="max-w-3xl mx-auto">
+            {/* Event Header with Image */}
+            <Card className="overflow-hidden border-0 rounded-t-lg shadow-md">
+                <div className="relative">
+                    {/* Title */}
+                    <div className="p-6 pb-0">
+                        <h1 className="text-3xl font-bold text-gray-700">{event.name}</h1>
+                    </div>
+
+                    {/* Main Image */}
+                    <div className="w-full">
+                        <img
+                            src={event.image || "/placeholder.svg?height=400&width=800"}
+                            alt={event.name}
+                            className="w-full object-cover"
+                        />
+                    </div>
+
+                    {/* Date Box */}
+                    <div className="absolute bottom-0 left-0 bg-red-500 text-white p-4 flex flex-col items-center justify-center w-[100px]">
+                        <span className="text-4xl font-bold">{day}</span>
+                        <span className="text-sm font-medium">{month}</span>
+                        <span className="text-sm">{year}</span>
+                    </div>
+                </div>
+
+                {/* Location and Time */}
+                <div className="p-6 pt-4">
+                    <div className="flex items-start gap-4">
+                        <MapPin className="h-6 w-6 mt-1" />
+                        <div className="flex flex-col">
+                            <div className="flex items-center gap-2">
+                                <span className="font-medium">{day}</span>
+                                <span className="font-medium">{month}</span>
+                                <span className="font-medium">{year}</span>
+                            </div>
+                            <div className="text-xl">
+                                {event.address.split(",")[0]} | {event.address.split(",")[1]?.trim()}
+                            </div>
+                            <div className="text-xl">{event.time}</div>
+                        </div>
+                    </div>
+                </div>
+            </Card>
+
+            {/* Description Section */}
+            <Card className="border-t-0 rounded-t-none shadow-md">
+                <div
+                    className="flex justify-between items-center p-4 cursor-pointer border-b"
+                    onClick={() => setIsDescriptionOpen(!isDescriptionOpen)}
+                >
+                    <h2 className="text-xl font-bold">Description</h2>
+                    {isDescriptionOpen ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+                </div>
+
+                {isDescriptionOpen && (
+                    <CardContent className="p-6">
+                        <h3 className="font-bold text-lg mb-2">{event.name}</h3>
+                        <p className="mb-2">
+                            Date: {day} {month} {year}, {event.time}
+                        </p>
+                        <p className="mb-2">Venue: {event.address.split(",")[0]}</p>
+                        <p className="mb-2">{event.description}</p>
+                    </CardContent>
+                )}
+            </Card>
+
+            {/* Tickets Section */}
+            <Card className="mt-4 border-0 shadow-md">
+                <div className="bg-gray-700 text-white p-4">
+                    <h2 className="text-xl font-bold">TICKETS FOR SALE</h2>
+                </div>
+
+                <div className="p-4 bg-gray-100">
+                    <h3 className="text-lg font-bold mb-4">TICKETS</h3>
+
+                    {Object.entries(event.tickets).map(([type, details]) => (
+                        <div key={type} className="mb-4 bg-white rounded-md overflow-hidden shadow-sm">
+                            <div className="flex flex-col sm:flex-row">
+                                <div className="relative">
+                                    {details.availability > 0 && (
+                                        <div className="absolute top-0 left-0 bg-yellow-400 text-xs font-bold px-2 py-1">ONSALE!</div>
+                                    )}
+                                    <div className="p-4 font-bold">{type} Ticket</div>
+                                </div>
+
+                                <div className="flex-1 p-4 flex flex-wrap gap-2 items-center justify-between">
+                                    <div className="text-gray-600">
+                                        Price: {details.price} {details.currency.toUpperCase()}
+                                    </div>
+
+                                    <div className="text-gray-600">Available: {details.availability}</div>
+
+                                    <div className="flex items-center gap-2">
+                                        <Input
+                                            type="number"
+                                            min="1"
+                                            max={details.availability}
+                                            value={selectedTickets[type] || ""}
+                                            onChange={(e) => handleQuantityChange(type, Number(e.target.value))}
+                                            className="w-20 text-center"
+                                        />
+
+                                        <Button
+                                            disabled={!selectedTickets[type]}
+                                            onClick={() => alert(`Added ${selectedTickets[type]} ${type} ticket(s) to cart`)}
+                                            className="bg-blue-500 hover:bg-blue-600"
+                                        >
+                                            Buy Tickets
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </Card>
         </div>
-    );
+    )
 }
+
+export default EventDetail
+
