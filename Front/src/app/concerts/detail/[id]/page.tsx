@@ -6,7 +6,7 @@ import { mockEvents } from "@/lib/mockEvents"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
-import { ChevronDown, ChevronUp, MapPin } from "lucide-react"
+import { ChevronDown, ChevronUp, MapPin, Clock4 } from "lucide-react"
 
 const EventDetail = () => {
     const params = useParams()
@@ -42,7 +42,7 @@ const EventDetail = () => {
     const { day, month, year } = formatDate(event.date)
 
     return (
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-3xl mx-auto px-8 md:px-12">
             {/* Event Header with Image */}
             <Card className="overflow-hidden border-0 rounded-t-lg shadow-md">
                 <div className="relative">
@@ -52,43 +52,41 @@ const EventDetail = () => {
                     </div>
 
                     {/* Main Image */}
-                    <div className="w-full">
+                    <div className="flex justify-center mt-4">
                         <img
-                            src={event.image || "/placeholder.svg?height=400&width=800"}
+                            src={event.image || "/img.png.svg?height=300&width=600"}
                             alt={event.name}
-                            className="w-full object-cover"
+                            className="max-w-[400px] w-full max-h-[250px] h-auto rounded-lg shadow-lg object-contain"
                         />
-                    </div>
-
-                    {/* Date Box */}
-                    <div className="absolute bottom-0 left-0 bg-red-500 text-white p-4 flex flex-col items-center justify-center w-[100px]">
-                        <span className="text-4xl font-bold">{day}</span>
-                        <span className="text-sm font-medium">{month}</span>
-                        <span className="text-sm">{year}</span>
-                    </div>
-                </div>
-
-                {/* Location and Time */}
-                <div className="p-6 pt-4">
-                    <div className="flex items-start gap-4">
-                        <MapPin className="h-6 w-6 mt-1" />
-                        <div className="flex flex-col">
-                            <div className="flex items-center gap-2">
-                                <span className="font-medium">{day}</span>
-                                <span className="font-medium">{month}</span>
-                                <span className="font-medium">{year}</span>
-                            </div>
-                            <div className="text-xl">
-                                {event.address.split(",")[0]} | {event.address.split(",")[1]?.trim()}
-                            </div>
-                            <div className="text-xl">{event.time}</div>
-                        </div>
                     </div>
                 </div>
             </Card>
 
+            {/* Event Details Block */}
+            <div className="flex items-center bg-white shadow-lg rounded-lg overflow-hidden mt-4">
+                {/* Red Date Block */}
+                <div className="bg-red-600 text-white flex flex-col items-center justify-center px-4 py-6">
+                    <span className="text-3xl font-bold">{day}</span>
+                    <span className="text-lg font-semibold">{month}</span>
+                    <span className="text-md">{year}</span>
+                </div>
+
+                {/* Event Info */}
+                <div className="p-4 flex-1">
+                    <h1 className="text-xl font-bold text-gray-800">{event.name}</h1>
+                    <div className="flex items-center text-gray-600 mt-2">
+                        <MapPin className="h-5 w-5 mr-2" />
+                        <span>{event.address}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600 mt-1">
+                        <Clock4 className="h-5 w-5 mr-2" />
+                        <span>{event.time}</span>
+                    </div>
+                </div>
+            </div>
+
             {/* Description Section */}
-            <Card className="border-t-0 rounded-t-none shadow-md">
+            <Card className="border-t-0 rounded-t-none shadow-md mt-4">
                 <div
                     className="flex justify-between items-center p-4 cursor-pointer border-b"
                     onClick={() => setIsDescriptionOpen(!isDescriptionOpen)}
@@ -111,57 +109,50 @@ const EventDetail = () => {
 
             {/* Tickets Section */}
             <Card className="mt-4 border-0 shadow-md">
-                <div className="bg-gray-700 text-white p-4">
-                    <h2 className="text-xl font-bold">TICKETS FOR SALE</h2>
-                </div>
-
                 <div className="p-4 bg-gray-100">
                     <h3 className="text-lg font-bold mb-4">TICKETS</h3>
 
                     {Object.entries(event.tickets).map(([type, details]) => (
-                        <div key={type} className="mb-4 bg-white rounded-md overflow-hidden shadow-sm">
-                            <div className="flex flex-col sm:flex-row">
-                                <div className="relative">
-                                    {details.availability > 0 && (
-                                        <div className="absolute top-0 left-0 bg-yellow-400 text-xs font-bold px-2 py-1">ONSALE!</div>
-                                    )}
-                                    <div className="p-4 font-bold">{type} Ticket</div>
+                        <div key={type} className="mb-4 bg-white rounded-md overflow-hidden shadow-sm border border-gray-300">
+                            <div className="flex flex-col sm:flex-row p-4">
+                                {/* Ticket Type */}
+                                <div className="flex-1">
+                                    <div className="text-lg font-bold">{type} Ticket</div>
                                 </div>
 
-                                <div className="flex-1 p-4 flex flex-wrap gap-2 items-center justify-between">
-                                    <div className="text-gray-600">
-                                        Price: {details.price} {details.currency.toUpperCase()}
-                                    </div>
+                                {/* Price & Availability */}
+                                <div className="flex-1 text-gray-600">
+                                    <p>Price: {details.price} {details.currency.toUpperCase()}</p>
+                                    <p>Available: {details.availability}</p>
+                                </div>
 
-                                    <div className="text-gray-600">Available: {details.availability}</div>
+                                {/* Ticket Quantity Selector & Buy Button */}
+                                <div className="flex items-center gap-2">
+                                    <Input
+                                        type="number"
+                                        min="1"
+                                        max={details.availability}
+                                        value={selectedTickets[type] || ""}
+                                        onChange={(e) => handleQuantityChange(type, Number(e.target.value))}
+                                        className="w-20 text-center border border-gray-400 rounded"
+                                    />
 
-                                    <div className="flex items-center gap-2">
-                                        <Input
-                                            type="number"
-                                            min="1"
-                                            max={details.availability}
-                                            value={selectedTickets[type] || ""}
-                                            onChange={(e) => handleQuantityChange(type, Number(e.target.value))}
-                                            className="w-20 text-center"
-                                        />
-
-                                        <Button
-                                            disabled={!selectedTickets[type]}
-                                            onClick={() => alert(`Added ${selectedTickets[type]} ${type} ticket(s) to cart`)}
-                                            className="bg-blue-500 hover:bg-blue-600"
-                                        >
-                                            Buy Tickets
-                                        </Button>
-                                    </div>
+                                    <Button
+                                        disabled={!selectedTickets[type]}
+                                        onClick={() => alert(`Added ${selectedTickets[type]} ${type} ticket(s) to cart`)}
+                                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded font-bold transition-all"
+                                    >
+                                        Buy Tickets
+                                    </Button>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
             </Card>
+
         </div>
     )
 }
 
 export default EventDetail
-

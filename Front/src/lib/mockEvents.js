@@ -1,31 +1,40 @@
 export const mockEvents = [
     {
         id: "1",
-        name: "Rock Night Festival",
+        name: "Brat Soirée",
         category: "Music",
-        address: "123 Rock Street, Paris",
+        address: "Place de Concorde, Paris",
         date: "2025-07-20",
         time: "20:00",
         tickets: {
             VIP: { price: 100, currency: "eur", quantity: 50, availability: 10 },
             Standard: { price: 50, currency: "eur", quantity: 200, availability: 20 },
         },
-        description: "An amazing night of rock music!",
-        image: "/images/img.png",
+        description: "Impact of BRAT",
+        image: "/bratt.png",
     },
     {
         id: "2",
-        name: "Jazz in the Park",
+        name: "Nice Jazz Festival",
         category: "Jazz",
-        address: "Green Park, Lyon",
-        date: "2025-06-15",
-        time: "20:00",
+        address: "PLACE MASSÉNA - THÉÂTRE DE VERDURE, Nice",
+        date: "2025-07-24",
+        time: "22:00",
         tickets: {
             VIP: { price: 80, currency: "eur", quantity: 30, availability: 5 },
             Standard: { price: 40, currency: "eur", quantity: 100, availability: 15 },
         },
-        description: "Experience the best jazz vibes in an open-air concert.",
-        image: "/images/img.png",
+        description: "Raye a été classée huit fois dans le Top 20 des ventes de singles au Royaume-Uni et figure au Top 10 dans plus de 20 pays !\n" +
+            "\n" +
+            "RAYE en quelques mots :\n" +
+            "\n" +
+            "6 Brit Awards remportés en 2024\n" +
+            "Des millions de disques vendus\n" +
+            "Classée huit fois dans le Top 20 des ventes de singles au Royaume-Uni et figure au Top 10 dans plus de 20 pays\n" +
+            "Cinq milliards de streams sur Spotify\n" +
+            "Un catalogue impressionnant de tubes écrits pour des artistes tels que Beyoncé et Charli XCX\n" +
+            " Une prestation époustouflante en juillet 2024 à Montreux à découvrir ici : RAYE - 'Live at Montreux Jazz Festival'",
+        image: "/raye.png",
     },
     {
         id: "3",
@@ -38,7 +47,9 @@ export const mockEvents = [
             VIP: { price: 299, currency: "eth", quantity: 100, availability: 20 },
             Standard: { price: 150, currency: "eth", quantity: 500, availability: 50 },
         },
-        description: "A spectacular performance by Lady Gaga at the National Stadium.",
+        description: "Lady Gaga announced her highly anticipated return to Singapore with four massive stadium shows this spring. Performing in the country for the first time in 13 years since her 2012 Born This Way Ball Tour, the four-show run at National Stadium kicks off on Sunday, May 18, 2025, with additional performances on May 19, 21, and 24. Today’s announcement comes just days after the release of Gaga’s seventh studio album, MAYHEM, out now via Interscope Records.\n" +
+            " \n" +
+            "Marking a return to her pop roots, MAYHEM reaffirms that Gaga is a master of reinvention, crafting an album that is as bold and eclectic as it is deeply personal. It is a declaration of artistic freedom, a celebration of life’s contradictions, and a testament to music’s power to bring people together in the face of chaos.",
         image: "/25sg_ladygaga.jpg",
     },
     {
