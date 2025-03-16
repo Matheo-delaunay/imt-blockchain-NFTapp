@@ -1,6 +1,7 @@
-import {sepolia} from '@reown/appkit/networks'
 import {createAppKit} from "@reown/appkit/react";
 import {wagmiAdapter} from '@/lib/wagmi.config'
+import {hardhat} from '@reown/appkit/networks';
+
 
 const metadata = {
     name: 'Billetterie NFT',
@@ -13,8 +14,8 @@ export default function AppKit() {
     return createAppKit({
         adapters: [wagmiAdapter],
         projectId: process.env.NEXT_PUBLIC_APP_KIT_PROJECT_ID as string,
-        networks: [sepolia],
-        defaultNetwork: sepolia,
+        networks: [hardhat],
+        defaultNetwork: hardhat,
         metadata: metadata,
         features: {
             analytics: true,
