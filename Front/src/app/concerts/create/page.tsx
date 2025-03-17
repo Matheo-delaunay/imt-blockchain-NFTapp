@@ -1,34 +1,44 @@
 "use client"
 
-import { useState } from "react"
-import { Calendar } from "lucide-react"
-import { cn } from "@/lib/utils"
+import {useState} from "react"
+import {Calendar} from "lucide-react"
+import {cn} from "@/lib/utils"
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Calendar as CalendarComponent } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Card, CardContent } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
+import {Label} from "@/components/ui/label"
+import {Textarea} from "@/components/ui/textarea"
+import {Calendar as CalendarComponent} from "@/components/ui/calendar"
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
+import {Checkbox} from "@/components/ui/checkbox"
+import {Card, CardContent} from "@/components/ui/card"
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
 
 const musicCategories = ["Pop", "Hip Hop", "Rock", "R&B", "Rap", "Jazz"]
 const ticketTypes = ["VIP", "Standard"]
 
 export default function CreateEventPage() {
     const [date, setDate] = useState<Date>()
-    const [ticketPrices, setTicketPrices] = useState<Record<string, number>>({})
-    const [priceUnits, setPriceUnits] = useState<Record<string, string>>({})
+    const [termsChecked, setTermsChecked] = useState(false)
+    // const [ticketPrices, setTicketPrices] = useState<Record<string, number>>({})
+    // const [priceUnits, setPriceUnits] = useState<Record<string, string>>({})
 
-    const handlePriceChange = (type: string, value: number | string) => {
-        setTicketPrices((prev) => ({ ...prev, [type]: Number(value) }))
-    }
+    // const handlePriceChange = (type: string, value: number | string) => {
+    //     setTicketPrices((prev) => ({...prev, [type]: Number(value)}))
+    // }
 
-    const handleUnitChange = (type: string, unit: string) => {
-        setPriceUnits((prev) => ({ ...prev, [type]: unit }))
+    // const handleUnitChange = (type: string, unit: string) => {
+    //     setPriceUnits((prev) => ({...prev, [type]: unit}))
+    // }
+
+    const handleTermsChange = () => {
+        setTermsChecked(!termsChecked)
+    };
+
+    const handleCreate = () => {
+        if (termsChecked) {
+
+        }
     }
 
     return (
@@ -42,15 +52,15 @@ export default function CreateEventPage() {
                     {/* Event Name */}
                     <div className="space-y-2">
                         <Label htmlFor="name">Name of your event</Label>
-                        <Input id="name" placeholder="Enter event name" />
+                        <Input id="name" placeholder="Enter event name"/>
                     </div>
 
-                    {/* Category */}
+                    {/* Category
                     <div className="space-y-2">
                         <Label>Category</Label>
                         <Select>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select a category" />
+                                <SelectValue placeholder="Select a category"/>
                             </SelectTrigger>
                             <SelectContent>
                                 {musicCategories.map((category) => (
@@ -61,11 +71,12 @@ export default function CreateEventPage() {
                             </SelectContent>
                         </Select>
                     </div>
+                    */}
 
                     {/* Address */}
                     <div className="space-y-2">
                         <Label htmlFor="address">Address</Label>
-                        <Input id="address" placeholder="Enter venue address" />
+                        <Input id="address" placeholder="Enter venue address"/>
                     </div>
 
                     {/* Date */}
@@ -77,12 +88,12 @@ export default function CreateEventPage() {
                                     variant="outline"
                                     className={cn("w-full justify-start text-left font-normal", !date && "text-muted-foreground")}
                                 >
-                                    <Calendar className="mr-2 h-4 w-4" />
+                                    <Calendar className="mr-2 h-4 w-4"/>
                                     {date ? date.toLocaleDateString() : "Pick a date"}
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0" align="start">
-                                <CalendarComponent mode="single" selected={date} onSelect={setDate} initialFocus />
+                                <CalendarComponent mode="single" selected={date} onSelect={setDate} initialFocus/>
                             </PopoverContent>
                         </Popover>
                     </div>
@@ -101,13 +112,14 @@ export default function CreateEventPage() {
                                 <div className="flex flex-1 gap-4">
                                     {/* Ticket Number Input */}
                                     <div className="relative rounded-md shadow-sm w-64">
-                                        <Input type="number" min="0" placeholder={`Number of ${type}`} className="w-full" />
+                                        <Input type="number" min="0" placeholder={`Number of ${type}`}
+                                               className="w-full"/>
                                     </div>
 
-                                    {/* Price Label */}
+                                    {/* Price Label
                                     <Label className="flex items-center">Price</Label>
 
-                                    {/* Price Input */}
+                                    {/* Price Input
                                     <div className="relative rounded-md shadow-sm w-64">
                                         <Input
                                             type="text"
@@ -118,7 +130,8 @@ export default function CreateEventPage() {
                                         />
                                     </div>
 
-                                    {/* Currency Selection */}
+                                    <span>ETH</span>
+                                    {/* Currency Selection
                                     <Select defaultValue="EUR" onValueChange={(value) => handleUnitChange(type, value)}>
                                         <SelectTrigger className="w-16">
                                             <SelectValue placeholder="€" />
@@ -128,6 +141,7 @@ export default function CreateEventPage() {
                                             <SelectItem value="ETH">ETH</SelectItem>
                                         </SelectContent>
                                     </Select>
+                                    */}
                                 </div>
                             </div>
                         ))}
@@ -154,11 +168,12 @@ export default function CreateEventPage() {
                             </TabsList>
                             <TabsContent value="upload">
                                 <Card>
-                                    <CardContent className="min-h-[300px] flex items-center justify-center border-2 border-dashed rounded-lg">
+                                    <CardContent
+                                        className="min-h-[300px] flex items-center justify-center border-2 border-dashed rounded-lg">
                                         <div className="text-center">
                                             <p className="text-sm text-muted-foreground">
                                                 Click to browse or
-                                                <br />
+                                                <br/>
                                                 drag and drop your photo
                                             </p>
                                         </div>
@@ -179,7 +194,7 @@ export default function CreateEventPage() {
                 {/* Terms and Buttons */}
                 <div className="flex flex-col items-center space-y-6">
                     <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" />
+                        <Checkbox id="terms" checked={termsChecked} onCheckedChange={handleTermsChange}/>
                         <label
                             htmlFor="terms"
                             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -189,10 +204,7 @@ export default function CreateEventPage() {
                     </div>
 
                     <div className="flex space-x-4">
-                        <Button variant="outline" type="button">
-                            Save as draft
-                        </Button>
-                        <Button type="submit">Create event</Button>
+                        <Button type={"button"} onClick={handleCreate} disabled={!termsChecked}>Create event</Button>
                     </div>
                 </div>
             </form>

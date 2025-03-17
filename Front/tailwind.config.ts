@@ -3,12 +3,16 @@ import type { Config } from "tailwindcss"
 const config: Config = {
 	darkMode: ["class"],
 	content: [
-		"./pages/**/*.{js,ts,jsx,tsx,mdx}",
-		"./components/**/*.{js,ts,jsx,tsx,mdx}",
-		"./app/**/*.{js,ts,jsx,tsx,mdx}",
-		"*.{js,ts,jsx,tsx,mdx}",
+		"./src/**/*.{js,jsx,ts,tsx}",
 	],
 	theme: {
+		container: {
+			center: true,
+			padding: "2rem",
+			screens: {
+				"2xl": "1400px",
+			},
+		},
 		extend: {
 			colors: {
 				background: "hsl(var(--background))",
