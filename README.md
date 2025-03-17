@@ -1,3 +1,5 @@
+Business Model Canva : https://www.canva.com/design/DAGhtshv4Ec/IrRiBnhfnhq67YcQKZJywg/view?utm_content=DAGhtshv4Ec&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=he48aa0fd8f
+
 # imt-blockchain-NFTapp
 Billetterie sur la blockchain.
 

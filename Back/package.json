@@ -17,10 +17,15 @@
   },
   "homepage": "https://github.com/Matheo-delaunay/imt-blockchain-NFTapp#readme",
   "dependencies": {
-    "@openzeppelin/contracts": "^5.2.0"
+    "@openzeppelin/contracts": "^5.2.0",
+    "dotenv": "^16.4.7",
+    "pnpm": "^10.6.2"
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "@nomicfoundation/hardhat-ignition-ethers": "^0.15.10",
     "@nomicfoundation/hardhat-toolbox-viem": "^3.0.0",
+    "ethers": "^6.13.5",
     "hardhat": "^2.22.18"
   }
 }

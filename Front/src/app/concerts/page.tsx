@@ -2,19 +2,39 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { Calendar, Clock, MapPin, Search } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useState } from "react"
-import { mockEvents } from "@/lib/mockEvents"
+import {Calendar, Clock, MapPin, Search} from "lucide-react"
+import {Button} from "@/components/ui/button"
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
+import {Input} from "@/components/ui/input"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
+import {useEffect, useState} from "react"
+import {usePublicClient} from "wagmi";
+import {getPastEvents} from "@/lib/getPastEvents";
+import ConcertFactory from "@/abis/ConcertFactory.json"
 
 export default function ConcertsPage() {
+    const publicClient = usePublicClient()
+    const [events, setEvents] = useState<any[]>([])
+
+    useEffect(() => {
+        if (publicClient) {
+            getPastEvents(
+                publicClient,
+                process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
+                ConcertFactory.abi,
+                "ConcertCreated"
+            ).then(events => {
+                console.log(events)
+                setEvents(events.map(e => e.args))
+            })
+        }
+    }, [publicClient]);
+
+
     const [searchQuery, setSearchQuery] = useState("")
     const [selectedCategory, setSelectedCategory] = useState("")
 
-    const filteredConcerts = mockEvents.filter((event) => {
+    const filteredConcerts = events.filter((event) => {
         const matchesSearch =
             event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             event.address.toLowerCase().includes(searchQuery.toLowerCase())
@@ -30,7 +50,7 @@ export default function ConcertsPage() {
                 <h1 className="text-3xl font-bold tracking-tight">Upcoming Concerts</h1>
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                     <div className="relative w-full sm:w-[300px]">
-                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground"/>
                         <Input
                             placeholder="Search concerts..."
                             className="pl-8"
@@ -40,7 +60,7 @@ export default function ConcertsPage() {
                     </div>
                     <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                         <SelectTrigger className="w-full sm:w-[180px]">
-                            <SelectValue placeholder="Category" />
+                            <SelectValue placeholder="Category"/>
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="all">All Categories</SelectItem>
@@ -58,16 +78,16 @@ export default function ConcertsPage() {
                 {filteredConcerts.map((event) => (
                     <Card key={event.id} className="overflow-hidden">
                         <div className="aspect-[16/9] relative">
-                            <Image src={event.image || "/img.png"} alt={event.name} fill className="object-cover" />
+                            <Image src={event.image || "/img.png"} alt={event.name} fill className="object-cover"/>
                         </div>
                         <CardHeader>
                             <CardTitle className="line-clamp-2">{event.name}</CardTitle>
                         </CardHeader>
                         <CardContent className="grid gap-2.5">
                             <div className="flex items-center gap-2 text-sm">
-                                <Calendar className="h-4 w-4 text-muted-foreground" />
+                                <Calendar className="h-4 w-4 text-muted-foreground"/>
                                 <span>
-                                    {new Date(event.date).toLocaleDateString("en-US", {
+                                    {new Date(Number(event.date)).toLocaleDateString("en-US", {
                                         weekday: "long",
                                         year: "numeric",
                                         month: "long",
@@ -76,11 +96,11 @@ export default function ConcertsPage() {
                                 </span>
                             </div>
                             <div className="flex items-center gap-2 text-sm">
-                                <Clock className="h-4 w-4 text-muted-foreground" />
+                                <Clock className="h-4 w-4 text-muted-foreground"/>
                                 <span>{event.time}</span>
                             </div>
                             <div className="flex items-center gap-2 text-sm">
-                                <MapPin className="h-4 w-4 text-muted-foreground" />
+                                <MapPin className="h-4 w-4 text-muted-foreground"/>
                                 <span>
                                     {event.address}
                                 </span>
@@ -99,7 +119,8 @@ export default function ConcertsPage() {
                                     </span>
                                 </div>
                                 {event.category && (
-                                    <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold">
+                                    <span
+                                        className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold">
                                         {event.category}
                                     </span>
                                 )}
