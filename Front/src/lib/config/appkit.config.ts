@@ -1,5 +1,5 @@
 import {createAppKit} from "@reown/appkit/react";
-import {wagmiAdapter} from '@/lib/wagmi.config'
+import {wagmiAdapter} from '@/lib/config/wagmi.config'
 import {hardhat} from '@reown/appkit/networks';
 
 

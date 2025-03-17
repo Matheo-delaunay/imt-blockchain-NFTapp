@@ -13,13 +13,22 @@ import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 import {Checkbox} from "@/components/ui/checkbox"
 import {Card, CardContent} from "@/components/ui/card"
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
+import {useCreateConcert} from "@/lib/createConcert";
+import {redirect} from "next/navigation";
 
-const musicCategories = ["Pop", "Hip Hop", "Rock", "R&B", "Rap", "Jazz"]
-const ticketTypes = ["VIP", "Standard"]
+// const musicCategories = ["Pop", "Hip Hop", "Rock", "R&B", "Rap", "Jazz"]
+// const ticketTypes = ["VIP", "Standard"]
 
 export default function CreateEventPage() {
-    const [date, setDate] = useState<Date>()
+    const { createConcert } = useCreateConcert();
+
     const [termsChecked, setTermsChecked] = useState(false)
+    const [name, setName] = useState("")
+    const [address, setAddress] = useState("")
+    const [date, setDate] = useState<Date>()
+    const [standardCount, setStandardCount] = useState(0)
+    const [standardPrice, setStandardPrice] = useState(0)
+
     // const [ticketPrices, setTicketPrices] = useState<Record<string, number>>({})
     // const [priceUnits, setPriceUnits] = useState<Record<string, string>>({})
 
@@ -35,10 +44,9 @@ export default function CreateEventPage() {
         setTermsChecked(!termsChecked)
     };
 
-    const handleCreate = () => {
-        if (termsChecked) {
-
-        }
+    const handleSubmit = () => {
+        createConcert(termsChecked, name, address, date, standardPrice, standardCount)
+            .then(() => redirect("/concerts"));
     }
 
     return (
@@ -52,7 +60,8 @@ export default function CreateEventPage() {
                     {/* Event Name */}
                     <div className="space-y-2">
                         <Label htmlFor="name">Name of your event</Label>
-                        <Input id="name" placeholder="Enter event name"/>
+                        <Input id="name" placeholder="Enter event name" value={name}
+                               onChange={(e) => setName(e.target.value)}/>
                     </div>
 
                     {/* Category
@@ -76,7 +85,8 @@ export default function CreateEventPage() {
                     {/* Address */}
                     <div className="space-y-2">
                         <Label htmlFor="address">Address</Label>
-                        <Input id="address" placeholder="Enter venue address"/>
+                        <Input id="address" placeholder="Enter venue address" value={address}
+                               onChange={(e) => setAddress(e.target.value)}/>
                     </div>
 
                     {/* Date */}
@@ -104,13 +114,35 @@ export default function CreateEventPage() {
                     <h3 className="text-lg font-medium">Tickets</h3>
                     <p className="text-sm text-muted-foreground">Set the number and price for each type of ticket</p>
                     <div className="space-y-4">
-                        {ticketTypes.map((type) => (
+                        <Label className="w-24 text-left font-medium">Standard</Label>
+
+                        <div className="flex flex-1 gap-4">
+                            {/* Ticket Number Input */}
+                            <div className="relative rounded-md shadow-sm w-64">
+                                <Input type="number" min="0" placeholder={`Number of standard`}
+                                       className="w-full" value={standardCount}
+                                       onChange={e => setStandardCount(parseInt(e.target.value))}/>
+                            </div>
+                            <Label className="flex items-center">Price</Label>
+
+                            {/* Price Input */}
+                            <div className="relative rounded-md shadow-sm w-64">
+                                <Input
+                                    type="number" min="0"
+                                    value={standardPrice}
+                                    onChange={(e) => setStandardPrice(parseInt(e.target.value))}
+                                    placeholder="Set price"
+                                    className="w-full"
+                                />
+                            </div>
+                        </div>
+                        {/*ticketTypes.map((type) => (
                             <div key={type} className="flex items-center gap-4">
-                                {/* Ticket Type Label */}
+                                {/* Ticket Type Label
                                 <Label className="w-24 text-left font-medium">{type}</Label>
 
                                 <div className="flex flex-1 gap-4">
-                                    {/* Ticket Number Input */}
+                                    {/* Ticket Number Input
                                     <div className="relative rounded-md shadow-sm w-64">
                                         <Input type="number" min="0" placeholder={`Number of ${type}`}
                                                className="w-full"/>
@@ -141,10 +173,9 @@ export default function CreateEventPage() {
                                             <SelectItem value="ETH">ETH</SelectItem>
                                         </SelectContent>
                                     </Select>
-                                    */}
                                 </div>
                             </div>
-                        ))}
+                        ))*/}
                     </div>
                 </div>
 
@@ -204,7 +235,7 @@ export default function CreateEventPage() {
                     </div>
 
                     <div className="flex space-x-4">
-                        <Button type={"button"} onClick={handleCreate} disabled={!termsChecked}>Create event</Button>
+                        <Button type={"button"} disabled={!termsChecked} onClick={handleSubmit}>Create event</Button>
                     </div>
                 </div>
             </form>

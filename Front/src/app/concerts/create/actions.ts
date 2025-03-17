@@ -1,8 +1,8 @@
 'use server'
 
-import {pinata} from "@/lib/pinata.config";
+import {pinata} from "@/lib/config/pinata.config";
 
-export async function createConcert() {
+export async function upload() {
     const upload = await pinata.upload.public.json({
         name: "Concert",
         description: "Concert description",
