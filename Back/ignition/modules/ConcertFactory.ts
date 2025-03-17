@@ -1,4 +1,3 @@
-import hre from "hardhat";
 import {buildModule} from "@nomicfoundation/hardhat-ignition/modules";
 
 export default buildModule("ConcertFactory", (m) => {

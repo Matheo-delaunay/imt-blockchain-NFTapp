@@ -3,7 +3,6 @@ pragma solidity ^0.8.29;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {ERC1155} from "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import {console} from "hardhat/console.sol";
 
 contract Concert is ERC1155, Ownable {
     // Ticket types
@@ -33,23 +32,13 @@ contract Concert is ERC1155, Ownable {
         uint256 _totalTickets,
         address _owner
     ) external {
-        console.log("Concert: Initializing concert");
         require(!initialized, "Already initialized");
-        console.log("Concert: Not initialized");
         initialized = true;
         price = _price;
         totalTickets = _totalTickets;
-        console.log("Concert: Setting URI");
         _setURI(_uri);
-        console.log("Concert: Transferring ownership");
         _transferOwnership(_owner);
-        console.log("Concert: transferred");
         emit ConcertInfo(_name, _date, _price, _totalTickets);
-        console.log("Concert: emitted");
-    }
-
-    function getOwner() external view returns (address) {
-        return owner();
     }
 
     /*function mint(uint256 _amount) external payable {
