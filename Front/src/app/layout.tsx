@@ -10,7 +10,6 @@ export const metadata: Metadata = {
     title: "Billeterie NFT",
     description: "Simplifiez et sécurisez la vente de vos billets avec la blockchain.",
 }
-
 export default async function RootLayout({
                                              children,
                                          }: Readonly<{
@@ -23,7 +22,7 @@ export default async function RootLayout({
         <body>
         <div className="flex min-h-[100dvh] flex-col">
             <ContextProvider cookies={cookies}>
-                <Navigation />
+                <Navigation/>
                 {children}
             </ContextProvider>
         </div>

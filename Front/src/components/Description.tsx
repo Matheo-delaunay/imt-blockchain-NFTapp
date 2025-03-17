@@ -31,7 +31,7 @@ export default function Description() {
                         <div
                             className="relative h-[350px] w-[350px] sm:h-[400px] sm:w-[400px] lg:h-[450px] lg:w-[450px]">
                             <Image
-                                src="/img.png"
+                                src="/chappell.jpg"
                                 alt="NFT Ticket Example"
                                 fill
                                 className="rounded-xl object-cover"
